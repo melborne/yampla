@@ -1,5 +1,4 @@
-require "yample/version"
 
 module Yample
-  # Your code goes here...
+  %w(version build).each { |lib| require_relative "yample/#{lib}" }
 end
