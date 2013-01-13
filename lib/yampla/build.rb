@@ -2,7 +2,7 @@ require "yaml"
 require "hashie"
 require "liquid"
 
-class Yample::Build
+class Yampla::Build
   attr_reader :data
   def initialize(yaml)
     @template = {}
@@ -14,15 +14,16 @@ class Yample::Build
     unless [:index, :items].include?(type.intern)
       raise ArgumentError, "First argument must :index or :items"
    end 
-    @template[type] = template
+    @template[type] = parse_template(template)
   end
 
-  def run(type, template=@template[type], name=nil)
+  def run(type, opt={})
+    opt = {template:@template[type], name:nil}.merge(opt)
     case type
     when :index
-      build_index(template, name)
+      build_index(opt[:template], opt[:name])
     when :items
-      build_items(template, name)
+      build_items(opt[:template], opt[:name])
     else
       raise ArgumentError, "First argument must be :index or :items."
     end
@@ -38,9 +39,10 @@ class Yample::Build
     end
   end
 
-  def save(type, ext=nil)
-    content = run(type)
-    ext = ".#{ext}" if ext
+  def save(type, opt={})
+    opt = {ext:nil, name:nil}.merge(opt)
+    content = run(type, name:opt[:name])
+    ext = ".#{opt[:ext]}" if opt[:ext]
     case type
     when :index
       File.open("index#{ext}", 'w') { |f| f.puts content }
@@ -60,5 +62,11 @@ class Yample::Build
 
   def yaml2object(yaml)
     yaml.map { |id, data| Hashie::Mash.new( data.dup.update(id: id) ) }
+  end
+
+  def parse_template(template)
+    File.read(template)
+  rescue Errno::ENOENT
+    return template if template.match(/.+?\.[^.]*$/)
   end
 end

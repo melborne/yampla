@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'yample/version'
+require 'yampla/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "yample"
-  gem.version       = Yample::VERSION
+  gem.name          = "yampla"
+  gem.version       = Yampla::VERSION
   gem.authors       = ["kyoendo"]
   gem.email         = ["postagie@gmail.com"]
   gem.description   = %q{Build List & Item pages from YAML data with a template engine}
