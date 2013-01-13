@@ -40,14 +40,20 @@ class Yampla::Build
   end
 
   def save(type, opt={})
-    opt = {ext:@extname, name:nil}.merge(opt)
+    opt = {ext:@extname, name:nil, dir:'out'}.merge(opt)
     content = run(type, name:opt[:name])
     ext = ".#{opt[:ext]}" if opt[:ext]
+    dir = opt[:dir]
+    Dir.mkdir(dir) unless Dir.exists?(dir)
     case type
     when :index
-      File.open("index#{ext}", 'w') { |f| f.puts content }
+      path = File.join(dir, "index#{ext}")
+      File.open(path, 'w') { |f| f.puts content }
     when :items
-      content.each { |id, data| File.open("#{id}#{ext}", 'w') { |f| f.puts data } }
+      content.each do |id, data|
+        path = File.join(dir, "#{id}#{ext}")
+        File.open(path, 'w') { |f| f.puts data }
+      end
     end
   end
 

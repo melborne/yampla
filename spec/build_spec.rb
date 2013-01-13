@@ -181,7 +181,7 @@ describe Yampla::Build do
           @ya.save(:index)
         end
         it "save a file" do
-          File.open('index').read.should eq "items size: 2\n"
+          File.open('out/index').read.should eq "items size: 2\n"
         end
       end
       context "w/ extension" do
@@ -193,7 +193,19 @@ describe Yampla::Build do
           @ya.save(:index, ext:'txt')
         end
         it "save a file" do
-          File.open('index.txt').read.should eq "items size: 2\n"
+          File.open('out/index.txt').read.should eq "items size: 2\n"
+        end
+      end
+      context "specify file destination" do
+        before do
+          @ya = Yampla::Build.new(@yml)
+          @ya.set_template(:index, ~<<-EOS)
+            items size: {{ items.size }}
+            EOS
+          @ya.save(:index, dir:'result')
+        end
+        it "save a file" do
+          File.open('result/index').read.should eq "items size: 2\n"
         end
       end
     end
@@ -208,8 +220,8 @@ describe Yampla::Build do
           @ya.save(:items)
         end
         it "save a files" do
-          File.open('item1').read.should eq "id:item1/title:book1/price:100\n"
-          File.open('item2').read.should eq "id:item2/title:book2/price:200\n"
+          File.open('out/item1').read.should eq "id:item1/title:book1/price:100\n"
+          File.open('out/item2').read.should eq "id:item2/title:book2/price:200\n"
         end
       end
       context "w extension" do
@@ -221,8 +233,8 @@ describe Yampla::Build do
           @ya.save(:items, ext:'txt')
         end
         it "save a files" do
-          File.open('item1.txt').read.should eq "id:item1/title:book1/price:100\n"
-          File.open('item2.txt').read.should eq "id:item2/title:book2/price:200\n"
+          File.open('out/item1.txt').read.should eq "id:item1/title:book1/price:100\n"
+          File.open('out/item2.txt').read.should eq "id:item2/title:book2/price:200\n"
         end
       end
     end
