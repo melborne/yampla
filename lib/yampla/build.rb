@@ -40,7 +40,7 @@ class Yampla::Build
   end
 
   def save(type, opt={})
-    opt = {ext:nil, name:nil}.merge(opt)
+    opt = {ext:@extname, name:nil}.merge(opt)
     content = run(type, name:opt[:name])
     ext = ".#{opt[:ext]}" if opt[:ext]
     case type
@@ -53,11 +53,7 @@ class Yampla::Build
 
   private
   def yaml_parse(yaml)
-    path?(yaml) ? YAML.load_file(yaml) : YAML.load(yaml)
-  end
-
-  def path?(str)
-    str.match(/\w+\.(yaml|yml)$/)
+    yaml.match(/\w+\.(yaml|yml)$/) ? YAML.load_file(yaml) : YAML.load(yaml)
   end
 
   def yaml2object(yaml)
@@ -65,7 +61,7 @@ class Yampla::Build
   end
 
   def parse_template(template)
-    File.read(template)
+    File.read(template).tap { @extname = File.extname(template)[1..-1] }
   rescue Errno::ENOENT
     return template if template.match(/.+?\.[^.]*$/)
   end
