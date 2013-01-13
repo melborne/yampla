@@ -1,6 +1,6 @@
 # Yampla
 
-Build list and item pages from YAML data with a template engine. Liquid is used for the engine.
+Build index and each item pages from YAML data with a template engine. Liquid is used for the engine.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-A simple example to create a book index page and book pages.
+A simple example to create a book index page and each book pages.
 
 ###Step1. Provide book data with YAML format.
 
@@ -45,7 +45,7 @@ A simple example to create a book index page and book pages.
         - sinatra
         - rack
 
-###Step2. Provide index template and book template.
+###Step2. Provide an index template and a book template.
 
 (index\_template.html)
 
@@ -64,7 +64,7 @@ A simple example to create a book index page and book pages.
       </body>
     </html>
 
-You can access books array data via **items** variable by default in Liquid tags.
+You can access books array data via **items** variable(by default) in Liquid tags. Each book properties can be accessed by method call style(ex. item.title).
 
 (book\_template.html)
 
@@ -86,7 +86,7 @@ You can access books array data via **items** variable by default in Liquid tags
       </body>
     </html>
 
-You can access each book data via **item** variable by default in Liquid tags.
+You can access each book data via **item** variable(by default) in Liquid tags.
 
 ###Step3. Write ruby code using yampla gem and run it.
 
@@ -101,7 +101,7 @@ You can access each book data via **item** variable by default in Liquid tags.
     puts ya.run(:index)
     puts ya.run(:items)
 
-As a result, you will get followings as index output;
+As a result, you will get index output as follows;
 
     <!DOCTYPE html>
     <html>
@@ -122,19 +122,19 @@ As a result, you will get followings as index output;
       </body>
     </html>
 
-Or followings as items output;
+And get items output as hash like follows;
 
     {"b1"=>"<!DOCTYPE html>\n<html>\n  <head>\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n    <title>book1</title>\n  </head>\n  <body>\n    <h2>book1</h2>\n    <p>1000JPY</p>\n    <p>2013-01-01</p>\n    <div>\n      \n      <small>ruby</small>\n      \n      <small>beginner</small>\n      \n    </div>\n  </body>\n</html>\n",
      "b2"=>"<!DOCTYPE html>\n<html>\n  <head>\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n    <title>book2</title>\n  </head>\n  <body>\n    <h2>book2</h2>\n    <p>1500JPY</p>\n    <p>2013-02-07</p>\n    <div>\n      \n      <small>rails</small>\n      \n    </div>\n  </body>\n</html>\n",
      "b3"=>"<!DOCTYPE html>\n<html>\n  <head>\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n    <title>book3</title>\n  </head>\n  <body>\n    <h2>book3</h2>\n    <p>2400JPY</p>\n    <p>2013-03-15</p>\n    <div>\n      \n      <small>sinatra</small>\n      \n      <small>rack</small>\n      \n    </div>\n  </body>\n</html>\n"}
 
 
-To get these results as files, try #save as follows;
+To get these results as files, try #save.
 
     ya.save(:index)
     ya.save(:items)
 
-As a result, 'index.html', 'b1.html', 'b2.html' and 'b3.html' with above contents will be created.
+'index.html', 'b1.html', 'b2.html' and 'b3.html' with above contents will be created.
 
 
 ## Contributing
