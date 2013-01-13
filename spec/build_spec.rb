@@ -135,4 +135,65 @@ describe Yample::Build do
                       'item2' => "id:item2/title:book2/price:200\n"} }
     end
   end
+
+  describe "#save" do
+    include FakeFS::SpecHelpers
+    before(:all) { FakeFS.activate! }
+    context "for index" do
+      context "w/o extension" do
+        before do
+          @ya = Yample::Build.new(@yml)
+          @ya.set_template(:index, ~<<-EOS)
+            items size: {{ items.size }}
+            EOS
+          @ya.save(:index)
+        end
+        it "save a file" do
+          File.open('index').read.should eq "items size: 2\n"
+        end
+      end
+      context "w/ extension" do
+        before do
+          @ya = Yample::Build.new(@yml)
+          @ya.set_template(:index, ~<<-EOS)
+            items size: {{ items.size }}
+            EOS
+          @ya.save(:index, :txt)
+        end
+        it "save a file" do
+          File.open('index.txt').read.should eq "items size: 2\n"
+        end
+      end
+    end
+
+    context "for items" do
+      context "w/o extension" do
+        before do
+          @ya = Yample::Build.new(@yml)
+          @ya.set_template(:items, ~<<-EOS)
+          id:{{ item.id }}/title:{{ item.title }}/price:{{ item.price }}
+          EOS
+          @ya.save(:items)
+        end
+        it "save a files" do
+          File.open('item1').read.should eq "id:item1/title:book1/price:100\n"
+          File.open('item2').read.should eq "id:item2/title:book2/price:200\n"
+        end
+      end
+      context "w extension" do
+        before do
+          @ya = Yample::Build.new(@yml)
+          @ya.set_template(:items, ~<<-EOS)
+          id:{{ item.id }}/title:{{ item.title }}/price:{{ item.price }}
+          EOS
+          @ya.save(:items, :txt)
+        end
+        it "save a files" do
+          File.open('item1.txt').read.should eq "id:item1/title:book1/price:100\n"
+          File.open('item2.txt').read.should eq "id:item2/title:book2/price:200\n"
+        end
+      end
+    end
+    after(:all) { FakeFS.deactivate! }
+  end
 end

@@ -11,17 +11,20 @@ class Yample::Build
   end
 
   def set_template(type, template)
+    unless [:index, :items].include?(type.intern)
+      raise ArgumentError, "First argument must :index or :items"
+   end 
     @template[type] = template
   end
 
-  def run(target, template=@template[target], name=nil)
-    case target
+  def run(type, template=@template[type], name=nil)
+    case type
     when :index
       build_index(template, name)
     when :items
       build_items(template, name)
     else
-      raise "First argument must be :index or :items."
+      raise ArgumentError, "First argument must be :index or :items."
     end
   end
 
@@ -32,6 +35,17 @@ class Yample::Build
   def build_items(template, name=nil)
     @data.each_with_object({}) do |item, h|
       h[item.id] = Liquid::Template.parse(template).render("#{name || 'item'}" => item)
+    end
+  end
+
+  def save(type, ext=nil)
+    content = run(type)
+    ext = ".#{ext}" if ext
+    case type
+    when :index
+      File.open("index#{ext}", 'w') { |f| f.puts content }
+    when :items
+      content.each { |id, data| File.open("#{id}#{ext}", 'w') { |f| f.puts data } }
     end
   end
 
