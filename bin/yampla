@@ -7,15 +7,13 @@ class OptionParser
     Trollop::options do
       version "yampla #{Yampla::VERSION} (c) 2013 kyoendo"
       banner ~<<-EOS
-        Build index and each item pages from YAML data with a template engine. Liquid is used for the engine.
-
-        Maliq is a markdown, liquid converter for EPUB's xhtml.
+        Yampla is a builder to build index and each item pages from YAML data with a template engine. Liquid is used for the engine.
 
         Prerequisite:
 
-            1. Provide book data with YAML format.
+            1. Provide item data with YAML format.
 
-            2. Provide an index template and a book template.
+            2. Provide an index template and a item template.
 
             3. Write ruby code using yampla gem and run it.
 
