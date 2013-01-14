@@ -21,4 +21,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'fakefs'
   gem.add_dependency 'hashie'
   gem.add_dependency 'liquid'
+  gem.add_dependency 'trollop'
 end
