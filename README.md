@@ -134,8 +134,11 @@ To get these results as files, try #save.
     ya.save(:index)
     ya.save(:items)
 
-'index.html', 'b1.html', 'b2.html' and 'b3.html' with above contents will be created.
+'index.html', 'b1.html', 'b2.html' and 'b3.html' with above contents will be created at 'out' subdirectory.
 
+## yampla command
+
+try `yampla -t book_template.html` at the file directory. Same result will be obtained. More details, see `yampla --help`.
 
 ## Contributing
 
