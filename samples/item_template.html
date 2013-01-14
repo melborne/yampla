@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>{{ item.title }}</title>
+  </head>
+  <body>
+    <h2>{{ item.title }}</h2>
+    <p>{{ item.price }}</p>
+    <p>{{ item.date }}</p>
+    <div>
+      {% for key in item.keywords %}
+      <small>{{ key }}</small>
+      {% endfor %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+b1:
+  title: book1
+  price: 1000JPY
+  date: 2013-1-1
+  keywords:
+    - ruby
+    - beginner
+b2:
+  title: book2
+  price: 1500JPY
+  date: 2013-2-7
+  keywords:
+    - rails
+b3:
+  title: book3
+  price: 2400JPY
+  date: 2013-3-15
+  keywords:
+    - sinatra
+    - rack
+
