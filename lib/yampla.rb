@@ -1,4 +1,4 @@
 
 module Yampla
-  %w(version build).each { |lib| require_relative "yampla/#{lib}" }
+  %w(version system_extension build).each { |lib| require_relative "yampla/#{lib}" }
 end
