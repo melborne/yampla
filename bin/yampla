@@ -29,7 +29,7 @@ class OptionParser
       opt :yaml, "Set data YAML file", :type => :string
       opt :index, "Set index template file", :default => "index_template.html"
       opt :item, "Set item template file", :default => "item_template.html"
-      opt :out, "Output files", :default => :all # :index or :items
+      opt :out, "Output files", :default => 'all' # :index or :items
       opt :dir, "Output directory", :default => 'out'
     end
   end
@@ -38,11 +38,20 @@ end
 opts = OptionParser.parse!
 files = Dir['*']
 
-yaml = opt[:yaml] || files.detect { |f| f.match /\w+\.(yaml|yml)$/ }
+yaml = opts[:yaml] || files.detect { |f| f.match /\w+\.(yaml|yml)$/ }
 
 ya = Yampla::Build.new(yaml)
-ya.set_template(:index, opt[:index])
-ya.set_template(:items, opt[:item])
+ya.set_template(:index, opts[:index])
+ya.set_template(:items, opts[:item])
 
-ya.save(:index)
-ya.save(:items)
+case opts[:out]
+when 'all'
+  ya.save(:index, dir:opts[:dir])
+  ya.save(:items, dir:opts[:dir])
+when 'index'
+  ya.save(:index, dir:opts[:dir])
+when 'items'
+  ya.save(:items, dir:opts[:dir])
+else
+  STDERR.puts "'out' option is wrong. 'all', 'index', 'items' are acceptable."
+end
