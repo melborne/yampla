@@ -72,6 +72,11 @@ class Yampla::Build
   def parse_template(template)
     File.read(template).tap { @extname = File.extname(template)[1..-1] }
   rescue Errno::ENOENT
-    return template if template.match(/.+?\.[^.]*$/)
+    #:FIXME: but impl!
+    if template.match(/^\w{1,20}\.\w{1,8}$/) #match only filename but string
+      raise Errno::ENOENT
+    else
+      template
+    end
   end
 end
