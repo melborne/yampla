@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["postagie@gmail.com"]
   gem.description   = %q{Build List & Item pages from YAML data with a template engine}
   gem.summary       = %q{Build List & Item pages from YAML data with a template engine}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/melborne/yampla"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
