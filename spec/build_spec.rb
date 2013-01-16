@@ -61,7 +61,9 @@ describe Yampla::Build do
     context "for index" do
       context "w/o template" do
         subject { Yampla::Build.new(@yml).run(:index) }
-        it { should eq "" }
+        it "raise no template error" do
+          expect { should }.to raise_error(Yampla::Build::TemplateError)
+        end
       end
       context "w/ simple template" do
         subject { Yampla::Build.new(@yml).run(:index, template:~<<-EOS) }
@@ -93,7 +95,9 @@ describe Yampla::Build do
     context "for each item" do
       context "w/o template" do
         subject { Yampla::Build.new(@yml).run(:items) }
-        it { should == {'item1' => "", 'item2' => ""} }
+        it "raise no template error" do
+          expect { should }.to raise_error(Yampla::Build::TemplateError)
+        end
       end
       context "w/ simple template" do
         subject { Yampla::Build.new(@yml).run(:items, template:~<<-EOS) }

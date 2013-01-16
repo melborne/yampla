@@ -3,6 +3,7 @@ require "hashie"
 require "liquid"
 
 class Yampla::Build
+  class TemplateError < StandardError; end
   attr_reader :data
   def initialize(yaml)
     @template = {}
@@ -30,10 +31,12 @@ class Yampla::Build
   end
 
   def build_index(template, name=nil)
+    raise TemplateError, 'Template for index not set.' unless template
     Liquid::Template.parse(template).render("#{name || 'items'}" => @data)
   end
 
   def build_items(template, name=nil)
+    raise TemplateError, 'Template for items not set.' unless template
     @data.each_with_object({}) do |item, h|
       h[item.id] = Liquid::Template.parse(template).render("#{name || 'item'}" => item)
     end
