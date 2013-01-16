@@ -25,8 +25,8 @@ class OptionParser
         EOS
 
       opt :yaml, "Set data YAML file", :type => :string
-      opt :index, "Set index template file", :default => "index_template.html"
-      opt :item, "Set item template file", :default => "item_template.html"
+      opt :index, "Set index template file", :type => :string
+      opt :item, "Set item template file", :type => :string
       opt :out, "Output files", :default => 'all' # :index or :items
       opt :dir, "Output directory", :default => 'out'
     end
@@ -37,21 +37,25 @@ opts = OptionParser.parse!
 files = Dir['*']
 
 yaml = opts[:yaml] || files.detect { |f| f.match /\w+\.(yaml|yml)$/ }
+abort "YAML file not found." unless yaml
 
-abort "YAML file not found" unless yaml
+index = opts[:index] || files.detect { |f| f.match /^index_template/ }
+item = opts[:item] || files.detect { |f| f.match /^item_template/ }
 
 ya = Yampla::Build.new(yaml)
-ya.set_template(:index, opts[:index])
-ya.set_template(:items, opts[:item])
 
-case opts[:out]
-when 'all'
+case 
+when [index, item].all? && opts[:out] == 'all'
+  ya.set_template(:index, index)
+  ya.set_template(:items, item)
   ya.save(:index, dir:opts[:dir])
   ya.save(:items, dir:opts[:dir])
-when 'index'
+when index && %w(all index).include?(opts[:out])
+  ya.set_template(:index, index)
   ya.save(:index, dir:opts[:dir])
-when 'items'
+when item && %w(all item).include?(opts[:out])
+  ya.set_template(:items, item)
   ya.save(:items, dir:opts[:dir])
 else
-  STDERR.puts "'out' option is wrong. 'all', 'index', 'items' are acceptable."
+  abort "Any template file not found."
 end
