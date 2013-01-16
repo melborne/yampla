@@ -38,6 +38,8 @@ files = Dir['*']
 
 yaml = opts[:yaml] || files.detect { |f| f.match /\w+\.(yaml|yml)$/ }
 
+abort "YAML file not found" unless yaml
+
 ya = Yampla::Build.new(yaml)
 ya.set_template(:index, opts[:index])
 ya.set_template(:items, opts[:item])
